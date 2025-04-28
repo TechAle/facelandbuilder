@@ -1,7 +1,7 @@
 class Item {
     constructor(data) {
         this.name = data.strippedName || data.name || 'Unnamed';
-        if (this.name === "Guardsman's Platebody") {
+        if (this.name === "Amulet Of Darkness") {
             let a = 0
         }
         this.rarity = data.rarity || 'Common';
@@ -29,6 +29,11 @@ class Item {
         this.gemSlots = data.gemSlots || 0;
         this.enchantable = !!data.enchantable;
         this.specialFlag = data.specialFlag || null;
+        this.passive = data.passives || data.passive || null;
+        if (this.passive && this.passive.length > 0) {
+            this.passive = this.passive.filter(stat => Item.isStatLine(stat))
+                                        .map(stat => Item.stripColors(stat).trim())
+            }
         this.groupNames = data.groupNames || [];
     }
 
@@ -83,13 +88,13 @@ class Item {
             [result.minValue, result.maxValue] = [parseInt(clean.split(" ")[0], 10), parseInt(clean.split(" ")[0], 10)];
             result.minValue *= sign; // Apply sign
             result.maxValue *= sign; // Apply sign
-            clean = clean.split(" ")[1];
+            clean = clean.split(" ").slice(1).join(" ").trim();
         }
 
         // Cleaned up stat
         result.stat = clean.trim();
         if (isNaN(result.minValue)) {
-            console.log(text)
+            this.description += " " + text + " ";
             return false
         }
 

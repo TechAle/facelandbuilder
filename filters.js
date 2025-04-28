@@ -108,7 +108,13 @@ function updateResults(items) {
             htmlContent += `<span>Descrizione:</span> ${item.description}<br>`;
         }
         if (item.stats && item.stats.length > 0) {
-            htmlContent += `<span>Stat:</span> ${item.stats.map(stat => `${stat.minValue} - ${stat.maxValue} ${stat.stat}`).join(', ')}<br>`;
+            htmlContent += `<span>Stat:</span> ${item.stats.map(stat => {
+                if (stat.minValue === stat.maxValue) {
+                    return `${stat.minValue} ${stat.stat}`;
+                } else {
+                    return `${stat.minValue} - ${stat.maxValue} ${stat.stat}`;
+                }
+            }).join(', ')}<br>`;
         }
         htmlContent += `<span>Gem Slots:</span> ${item.gemSlots}<br>`;
         htmlContent += `<span>Enchantable:</span> ${item.enchantable}<br>`;
@@ -117,6 +123,9 @@ function updateResults(items) {
         }
         if (item.groupNames && item.groupNames.length > 0) {
             htmlContent += `<span>Group Names:</span> ${item.groupNames.join(', ')}<br>`;
+        }
+        if (item.passive) {
+            htmlContent += `<span>Passive:</span> ${item.passive}<br>`;
         }
 
         listItem.innerHTML = htmlContent;
