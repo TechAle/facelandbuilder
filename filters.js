@@ -3,22 +3,22 @@ function filterItems(items, filters) {
         // Filter by item type (allow any type if not specified)
         if (filters.type && item.type !== filters.type) return false;
 
+        // Filter by stats (allow any stat if not specified)
+        if (filters.stats) {
+            for (const [statName, { minValue, maxValue }] of Object.entries(filters.stats)) {
+                const stat = item.stats.find(s => s.stat === statName);
+                if (!stat || stat.minValue < minValue || stat.maxValue > maxValue) return false;
+                else {
+                    let a = 0;
+                }
+            }
+        }
         if (filters.gruppo) {
             let groupNames = item.groupNames || [];
             groupNames = groupNames.map(name => name.toLowerCase());
             if (!groupNames.includes(filters.gruppo)) return false;
         }
-
-        // Filter by level range (allow any range if not specified)
-        if (filters.levelRange) {
-            const rangesStart = filters.levelRange.split("-");
-            const minLevel = parseInt(rangesStart[0], 10);
-            const maxLevel = parseInt(rangesStart[1], 10);
-            if (items.levelRequirement !== undefined) {
-                let a = 0
-            }
-            if (item.levelRequirement < minLevel || item.levelRequirement > maxLevel || item.levelRequirement === undefined) return false;
-        }
+        if (item.levelRequirement < filters.livelloMin || item.levelRequirement > filters.livelloMax || item.levelRequirement === undefined) return false;
 
         // Filter by stat range (allow any range if not specified)
         if (filters.statsRange) {
@@ -56,9 +56,23 @@ function filterItems(items, filters) {
 document.getElementById('filter-form').addEventListener('submit', function(event) {
     event.preventDefault();
 
+    var livello = slider.noUiSlider.get();
+    var stats = document.getElementsByClassName("filter-row")
+    var output = {}
+    for(var i = 0; i < stats.length; i++) {
+        var statName = stats[i].getElementsByTagName("input")[0].value;
+        var minValue = stats[i].getElementsByTagName("input")[1].value;
+        var maxValue = stats[i].getElementsByTagName("input")[2].value;
+
+        if (statName && minValue && maxValue) {
+            output[statName] = { minValue: parseInt(minValue), maxValue: parseInt(maxValue) };
+        }
+    }
     const filters = {
         type: document.getElementById('type').value,
-        levelRange: document.getElementById('level-range').value,
+        livelloMin: livello[0],
+        livelloMax: livello[1],
+        stats: output,
         name: document.getElementById('name').value,
         description: document.getElementById('description').value,
         gruppo: document.getElementById('gruppo').value,
@@ -113,3 +127,51 @@ function updateResults(items) {
         itemList.innerHTML = '<li>Nessun oggetto trovato.</li>';
     }
 }
+
+// Bottone "Filtro Abilità"
+document.getElementById('add-ability-filter').addEventListener('click', function() {
+    var container = document.getElementById('ability-filters');
+
+    // Crea il contenitore della nuova riga
+    var filterRow = document.createElement('div');
+    filterRow.style.marginTop = "10px";
+    filterRow.style.display = "flex";
+    filterRow.style.gap = "10px";
+    filterRow.style.alignItems = "center";
+    filterRow.className = "filter-row";
+
+    // Crea gli input
+    var abilityInput = document.createElement('input');
+    abilityInput.type = 'text';
+    abilityInput.placeholder = 'Nome abilità';
+    abilityInput.name = 'ability-name[]';
+
+    var minInput = document.createElement('input');
+    minInput.type = 'number';
+    minInput.placeholder = 'Min';
+    minInput.name = 'ability-min[]';
+    minInput.style.width = "70px";
+
+    var maxInput = document.createElement('input');
+    maxInput.type = 'number';
+    maxInput.placeholder = 'Max';
+    maxInput.name = 'ability-max[]';
+    maxInput.style.width = "70px";
+
+    // Bottone per rimuovere la riga
+    var removeButton = document.createElement('button');
+    removeButton.type = 'button';
+    removeButton.textContent = 'Rimuovi';
+    removeButton.onclick = function() {
+        container.removeChild(filterRow);
+    };
+
+    // Aggiungi tutto alla riga
+    filterRow.appendChild(abilityInput);
+    filterRow.appendChild(minInput);
+    filterRow.appendChild(maxInput);
+    filterRow.appendChild(removeButton);
+
+    // Aggiungi la riga al contenitore
+    container.appendChild(filterRow);
+});

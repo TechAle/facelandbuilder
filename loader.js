@@ -1,7 +1,7 @@
 class Item {
     constructor(data) {
         this.name = data.strippedName || data.name || 'Unnamed';
-        if (this.name === "Orc Battleaxe") {
+        if (this.name === "Guardsman's Platebody") {
             let a = 0
         }
         this.rarity = data.rarity || 'Common';
@@ -24,6 +24,7 @@ class Item {
         this.stats = data.description
             .filter(line => Item.isStatLine(line))
             .map(line => Item.parseStatLine(Item.stripColors(line))); // Strip colors before parsing
+        this.stats = this.stats.filter(stat => stat !== false); // Remove any failed parses
 
         this.gemSlots = data.gemSlots || 0;
         this.enchantable = !!data.enchantable;
@@ -39,7 +40,7 @@ class Item {
     static isStatLine(text) {
         // Detect if a line is likely a "stat" rather than description
         const clean = Item.stripColors(text).trim();
-        return clean.match(/[\+\-\d]+/g) && (!clean.includes("Level"))
+        return (!clean.includes("Level")) && clean.length > 0 && clean.indexOf(" ") !== -1
     }
 
     static parseStatLine(text) {
@@ -74,17 +75,22 @@ class Item {
             const parts = clean.split("(");
             const value = parts[1].split(")")[0].trim();
             [result.minValue, result.maxValue] = value.split(" to ").map(v => parseInt(v.trim(), 10)); // Split range into min and max
+            result.minValue *= sign; // Apply sign
+            result.maxValue *= sign; // Apply sign
             clean = clean.split(")")[1].trim(); // Get remaining stat description
         } else {
             // If no range, extract single value and stat
             [result.minValue, result.maxValue] = [parseInt(clean.split(" ")[0], 10), parseInt(clean.split(" ")[0], 10)];
+            result.minValue *= sign; // Apply sign
+            result.maxValue *= sign; // Apply sign
             clean = clean.split(" ")[1];
         }
 
         // Cleaned up stat
         result.stat = clean.trim();
-        if (result.minValue == null) {
+        if (isNaN(result.minValue)) {
             console.log(text)
+            return false
         }
 
         return result;

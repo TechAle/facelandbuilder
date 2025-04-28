@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<link href="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js"></script>
 <div class="container">
     <h1>Filtra Oggetti</h1>
 
@@ -16,13 +18,12 @@
         <form id="filter-form">
             <label for="type">Tipo:</label>
             <input type="text" id="type" placeholder="Es. Weapon, Armor...">
-            <label for="rarita">Rarita:</label>
+
+            <label for="rarita">Rarità:</label>
             <input type="text" id="rarita" placeholder="Es. Epico Raro ecc">
+
             <label for="gruppo">Gruppo:</label>
             <input type="text" id="gruppo" placeholder="Necklace Any Armor">
-
-            <label for="level-range">Intervallo di Livello:</label>
-            <input type="text" id="level-range" placeholder="Es. 5-15">
 
             <label for="name">Nome:</label>
             <input type="text" id="name" placeholder="Nome dell'oggetto">
@@ -30,7 +31,16 @@
             <label for="description">Descrizione:</label>
             <input type="text" id="description" placeholder="Descrizione dell'oggetto">
 
-            <button type="submit">Filtra</button>
+            <label for="level-range">Livello:</label>
+            <div id="level-range" style="margin: 50px;"></div>
+
+            <!-- Pulsante per aggiungere filtri abilità -->
+            <button id="add-ability-filter" type="button">Filtro Abilità</button>
+
+            <!-- Contenitore dei filtri abilità -->
+            <div id="ability-filters" style="margin-top: 20px;"></div>
+
+            <button type="submit" style="margin-top: 20px;">Filtra</button>
         </form>
     </div>
 
@@ -42,6 +52,29 @@
         </ul>
     </div>
 </div>
+<script>
+    var slider = document.getElementById('level-range');
+
+    noUiSlider.create(slider, {
+        start: [0, 100],      // Valori iniziali: minimo e massimo
+        connect: true,         // Colora l'area tra i due cursori
+        range: {
+            'min': 0,
+            'max': 100
+        },
+        step: 1,               // Muove di 1 alla volta
+        tooltips: true,        // Mostra i tooltip sopra i cursori
+        format: {
+            to: function(value) {
+                return Math.round(value);
+            },
+            from: function(value) {
+                return Number(value);
+            }
+        }
+    });
+
+</script>
 
 <script src="loader.js"></script>
 <script src="filters.js"></script>
