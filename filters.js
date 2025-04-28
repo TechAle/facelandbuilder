@@ -3,8 +3,10 @@ function filterItems(items, filters) {
         // Filter by item type (allow any type if not specified)
         if (filters.type && item.type !== filters.type) return false;
 
-        if (item.name === "Orc Battleaxe") {
-            let a = 0
+        if (filters.gruppo) {
+            let groupNames = item.groupNames || [];
+            groupNames = groupNames.map(name => name.toLowerCase());
+            if (!groupNames.includes(filters.gruppo)) return false;
         }
 
         // Filter by level range (allow any range if not specified)
@@ -58,7 +60,9 @@ document.getElementById('filter-form').addEventListener('submit', function(event
         type: document.getElementById('type').value,
         levelRange: document.getElementById('level-range').value,
         name: document.getElementById('name').value,
-        description: document.getElementById('description').value
+        description: document.getElementById('description').value,
+        gruppo: document.getElementById('gruppo').value,
+        rarity: document.getElementById('rarita').value,
     };
 
     const filteredItems = filterItems(items, filters);
