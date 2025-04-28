@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filtro Oggetti</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <h1>Filtra Oggetti</h1>
+
+    <!-- Form per i filtri -->
+    <div class="filters">
+        <h2>Filtri</h2>
+        <form id="filter-form">
+            <label for="type">Tipo:</label>
+            <input type="text" id="type" placeholder="Es. Weapon, Armor...">
+            <label for="rarita">Rarita:</label>
+            <input type="text" id="rarita" placeholder="Es. Epico Raro ecc">
+            <label for="gruppo">Gruppo:</label>
+            <input type="text" id="gruppo" placeholder="Necklace Any Armor">
+
+            <label for="level-range">Intervallo di Livello:</label>
+            <input type="text" id="level-range" placeholder="Es. 5-15">
+
+            <label for="name">Nome:</label>
+            <input type="text" id="name" placeholder="Nome dell'oggetto">
+
+            <label for="description">Descrizione:</label>
+            <input type="text" id="description" placeholder="Descrizione dell'oggetto">
+
+            <button type="submit">Filtra</button>
+        </form>
+    </div>
+
+    <!-- Risultati -->
+    <div id="results" class="results">
+        <h2>Risultati:</h2>
+        <ul id="item-list">
+            <!-- Oggetti filtrati verranno inseriti qui -->
+        </ul>
+    </div>
+</div>
+
+<script src="loader.js"></script>
+<script src="filters.js"></script>
+</body>
+</html>
