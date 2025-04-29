@@ -123,7 +123,7 @@ function updateResults(items) {
 
 // Format type for filename: remove spaces and capitalize properly
         const typeName = item.type?.replace(/\s+/g, '_') || 'Trinket'; // fallback to Trinket
-        iconImage.style.backgroundImage = `url('/img/${typeName}.webp')`;
+        iconImage.style.backgroundImage = `url('img/${typeName}.webp')`;
 
         iconWrapper.appendChild(iconImage);
         iconContainer.appendChild(iconWrapper);
