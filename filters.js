@@ -61,8 +61,8 @@ document.getElementById('filter-form').addEventListener('submit', function(event
     var output = {}
     for(var i = 0; i < stats.length; i++) {
         var statName = stats[i].getElementsByTagName("input")[0].value;
-        var minValue = stats[i].getElementsByTagName("input")[1].value;
-        var maxValue = stats[i].getElementsByTagName("input")[2].value;
+        var minValue = stats[i].getElementsByTagName("input")[1].value || -9999;
+        var maxValue = stats[i].getElementsByTagName("input")[2].value || 9999;
 
         if (statName && minValue && maxValue) {
             output[statName] = { minValue: parseInt(minValue), maxValue: parseInt(maxValue) };
