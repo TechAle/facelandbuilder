@@ -18,15 +18,18 @@ class Item {
 
         // Extract level requirement from description if exists
         this.levelRequirement = this.extractLevelRequirement(data.description);
+        this.skillRequirement = this.extractSkilllRequirement(data.description);
 
         // Description: prefer flavorText if available, else clean description
         this.description = ""
         if (data.flavorText && data.flavorText.length > 0) {
-            this.description = data.flavorText.map(Item.stripColors).join(' ');
+            this.description = Item.replaceWtf(data.flavorText.map(Item.stripColors).join(' '))
         } else {
             this.description = data.description
-                .filter(line => line.trim() !== '' && !Item.isStatLine(line) && line.indexOf("Level Requirement") === -1)
+                .filter(line => line.trim() !== '' && !Item.isStatLine(line)
+                    && line.indexOf("Level Requirement") === -1 && line.indexOf("Skill Requirement") === -1)
                 .map(Item.stripColors)
+                .map(Item.replaceWtf)
                 .join(' ');
         }
 
@@ -74,13 +77,15 @@ class Item {
 
     static replaceWtf(text) {
         return text.replace("儔", " Life").replace("儀", " Physical Damage").replace("峑", " Range")
-            .replace("儠", " Life Regen").replace("儡", "Barrier Regen")
+            .replace("儠", " Life Regen").replace("儡", "Barrier Regen").replace("億", " Lightning Damage")
+            .replace("儓", " Energy").replace("峐", " Rage").replace("儗", " Barrier")
+            .replace(/[丗丝东业丕丑且丙丐丘丛]/g, "")
     }
 
     static isStatLine(text) {
         // Detect if a line is likely a "stat" rather than description
         const clean = Item.stripColors(text).trim();
-        return (!clean.includes("Level")) && clean.length > 0 && clean.indexOf(" ") !== -1
+        return (!clean.includes("Level")) && (!clean.includes("Skill")) && clean.length > 0 && clean.indexOf(" ") !== -1
     }
 
     static parseStatLine(text) {
@@ -128,7 +133,7 @@ class Item {
 
         // Cleaned up stat
         result.stat = clean.trim();
-        if (isNaN(result.minValue)) {
+        if (isNaN(result.minValue) || isNaN(result.maxValue)) {
             return [false, this.replaceWtf(text)]
         }
         if (!statsList.includes(result.stat)) {
@@ -151,6 +156,17 @@ class Item {
         return null;
     }
 
+    extractSkilllRequirement(descriptionArray) {
+        if (!descriptionArray || descriptionArray.length === 0) return null;
+        for (let line of descriptionArray) {
+            const clean = Item.stripColors(line).trim();
+            const match = clean.match(/^Skill Requirement: (\d+)/i);
+            if (match) {
+                return parseInt(match[1], 10);
+            }
+        }
+        return null;
+    }
 }
 const items = []
 const names = []

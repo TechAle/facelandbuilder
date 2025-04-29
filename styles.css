@@ -148,3 +148,124 @@ h1 {
     color: #666;
     font-style: italic;
 }
+
+.item-container {
+    background: white;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 320px;
+}
+
+/* Gradient background for icon wrapper based on rarity */
+.icon-wrapper {
+    width: 64px;
+    height: 64px;
+    padding: 4px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.icon-wrapper.Common {
+    background: radial-gradient(circle, #ffffff 0%, #cccccc 100%);
+}
+
+.icon-wrapper.Uncommon {
+    background: radial-gradient(circle, #e0f7ff 0%, #a0cfff 100%);
+}
+
+.icon-wrapper.Rare {
+    background: radial-gradient(circle, #f3e0ff 0%, #b480ff 100%);
+}
+
+.icon-wrapper.Epic {
+    background: radial-gradient(circle, #ffe0e0 0%, #ff6666 100%);
+}
+
+/* Title coloring for rarity */
+.item-title.Common { color: #555; }
+.item-title.Uncommon { color: #0077cc; }
+.item-title.Rare { color: #8000ff; }
+.item-title.Epic { color: #cc0000; }
+
+.hidden-title {
+    display: none;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin: 4px 0;
+}
+
+.center {
+    text-align: center;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 2px 0;
+}
+
+.stat-value {
+    width: 80px;
+    text-align: center;
+}
+
+.stat-value.positive { color: green; }
+.stat-value.negative { color: red; }
+
+.stat-name {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.passive-desc {
+    margin-left: 0.5rem;
+    font-style: italic;
+    color: #333;
+}
+
+.dps {
+    margin-top: 0.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.item-icon {
+    width: 60px;
+    height: 60px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+}
+
+.divTitle {
+    margin-bottom: 5px;
+}
+
+.description {
+    color:slategray;
+}
+
+#sort-arrow {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.arrow-up {
+    border-bottom: 10px solid #000; /* Up arrow */
+}
+
+.arrow-down {
+    border-top: 10px solid #000; /* Down arrow */
+    transform: rotate(0deg); /* Flip the arrow when down */
+}

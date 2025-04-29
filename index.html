@@ -38,11 +38,23 @@
             <datalist id="name-suggestions">
             </datalist>
 
+            <div>
+                <label for="sort">Sort:</label>
+                <span id="sort-arrow" class="arrow-up" onclick="toggleSortOrder()"></span>
+            </div>
+            <input type="text" id="sort" list="sort-suggestions" placeholder="Sorting ability">
+            <datalist id="sort-suggestions">
+            </datalist>
+
+
+
             <label for="description">Descrizione:</label>
             <input type="text" id="description" placeholder="Descrizione dell'oggetto">
 
+
             <label for="level-range">Livello:</label>
             <div id="level-range" style="margin: 50px;"></div>
+
 
             <!-- Pulsante per aggiungere filtri abilità -->
             <button id="add-ability-filter" type="button">Filtro Abilità</button>
