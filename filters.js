@@ -195,6 +195,8 @@ function updateResults(items) {
             passiveRow.className = 'row';
             passiveRow.innerHTML = `<b class="${item.rarity || 'Common'}">+Passive:</b> <span class="passive-desc">${item.passive}</span>`;
             container.appendChild(passiveRow);
+            const br = document.createElement('br');
+            container.appendChild(br);
         }
 
         // Description
@@ -203,6 +205,8 @@ function updateResults(items) {
             descriptionRow.className = 'description';
             descriptionRow.innerHTML = `${item.description}`;
             container.appendChild(descriptionRow);
+            const br = document.createElement('br');
+            container.appendChild(br);
         }
 
 

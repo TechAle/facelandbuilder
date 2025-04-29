@@ -4,7 +4,7 @@ class Item {
         if (!names.includes(this.name)) {
             names.push(this.name);
         }
-        if (this.name === "Enlightenment") {
+        if (this.name === "Spirit Wind") {
             let a = 0
         }
         this.rarity = data.rarity || 'Common';
@@ -80,6 +80,11 @@ class Item {
         return text.replace("儔", " Life").replace("儀", " Physical Damage").replace("峑", " Range")
             .replace("儠", " Life Regen").replace("儡", "Barrier Regen").replace("億", " Lightning Damage")
             .replace("儓", " Energy").replace("峐", " Rage").replace("儗", " Barrier")
+            .replace("儃", " Ice Damage")
+            .replace("|none|东慳", "[On Cast]").replace("|none|丙", "[On Kill]").replace("|none|且", "[Combat Start]")
+            .replace("|none|东", "[On Cast]").replace("|none|丑", "[When Hit]").replace("|none|世", "[On Death]")
+            .replace("|none|丕", "[On Exit Combat]").replace("|none|丝", "[On Air Jump]").replace("|none|丗", "[Ability Mod] ")
+            .replace("|none|丐", "[On Hit]").replace("|none|业", "[On Cast]").replace("|none|丛", "[On Dodge]")
             .replace(/[丗丝东业丕丑且丙丐丘丛]/g, "")
     }
 
