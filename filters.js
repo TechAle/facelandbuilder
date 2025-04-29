@@ -226,7 +226,7 @@ document.getElementById('add-ability-filter').addEventListener('click', function
     // Crea gli input
     var abilityInput = document.createElement('input');
     abilityInput.type = 'text';
-    abilityInput.placeholder = 'Nome abilità';
+    abilityInput.placeholder = 'Name ability';
     abilityInput.name = 'ability-name[]';
 
     var minInput = document.createElement('input');
@@ -244,7 +244,7 @@ document.getElementById('add-ability-filter').addEventListener('click', function
     // Bottone per rimuovere la riga
     var removeButton = document.createElement('button');
     removeButton.type = 'button';
-    removeButton.textContent = 'Rimuovi';
+    removeButton.textContent = 'Delete';
     removeButton.onclick = function() {
         container.removeChild(filterRow);
     };

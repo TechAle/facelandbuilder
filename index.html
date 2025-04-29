@@ -1,40 +1,38 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Filtro Oggetti</title>
+    <title>Item Filter</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <link href="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js"></script>
 <div class="container">
-    <h1>Filtra Oggetti</h1>
+    <h1>Filter Items</h1>
 
-    <!-- Form per i filtri -->
+    <!-- Filter Form -->
     <div class="filters">
-        <h2>Filtri</h2>
+        <h2>Filters</h2>
         <form id="filter-form">
-            <label for="type">Tipo:</label>
-            <input type="text" id="type" list="type-suggestions" placeholder="Es. Weapon, Armor...">
+            <label for="type">Type:</label>
+            <input type="text" id="type" list="type-suggestions" placeholder="E.g. Weapon, Armor...">
             <datalist id="type-suggestions">
             </datalist>
 
-
-            <label for="rarita">Rarità:</label>
-            <input type="text" list="rarity-suggestions" id="rarita" placeholder="Es. Epico Raro ecc">
+            <label for="rarita">Rarity:</label>
+            <input type="text" list="rarity-suggestions" id="rarita" placeholder="E.g. Epic, Rare, etc.">
             <datalist id="rarity-suggestions">
             </datalist>
 
-
-            <label for="gruppo">Gruppo:</label>
-            <input type="text" list="group-suggestions" id="gruppo" placeholder="Necklace Any Armor">
+            <label for="gruppo">Group:</label>
+            <input type="text" list="group-suggestions" id="gruppo" placeholder="Necklace, Any Armor">
             <datalist id="group-suggestions">
             </datalist>
 
-            <label for="name">Nome:</label>
-            <input type="text" list="name-suggestions" id="name" placeholder="Nome dell'oggetto">
+            <label for="name">Name:</label>
+            <input type="text" list="name-suggestions" id="name" placeholder="Item name">
             <datalist id="name-suggestions">
             </datalist>
 
@@ -46,35 +44,30 @@
             <datalist id="sort-suggestions">
             </datalist>
 
+            <label for="description">Description:</label>
+            <input type="text" id="description" placeholder="Item description">
 
-
-            <label for="description">Descrizione:</label>
-            <input type="text" id="description" placeholder="Descrizione dell'oggetto">
-
-
-            <label for="level-range">Livello:</label>
+            <label for="level-range">Level:</label>
             <div id="level-range" style="margin: 50px;"></div>
 
+            <!-- Button to add ability filters -->
+            <button id="add-ability-filter" type="button">Ability Filter</button>
 
-            <!-- Pulsante per aggiungere filtri abilità -->
-            <button id="add-ability-filter" type="button">Filtro Abilità</button>
-
-            <!-- Contenitore dei filtri abilità -->
+            <!-- Container for ability filters -->
             <div id="ability-filters" style="margin-top: 20px;"></div>
 
-            <button type="submit" style="margin-top: 20px;">Filtra</button>
+            <button type="submit" style="margin-top: 20px;">Filter</button>
         </form>
     </div>
 </div>
-<!-- Risultati -->
+<!-- Results -->
 <div id="results" class="results">
-    <h2>Risultati:</h2>
+    <h2>Results:</h2>
     <div id="item-list">
-        <!-- Oggetti filtrati verranno inseriti qui -->
+        <!-- Filtered items will appear here -->
     </div>
 </div>
 <script src="range.js"></script>
-
 <script src="loader.js"></script>
 <script src="filters.js"></script>
 </body>
