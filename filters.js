@@ -93,7 +93,7 @@ function updateResults(items) {
     if (items.length === 0) {
         const emptyDiv = document.createElement('div');
         emptyDiv.className = 'item-container center';
-        emptyDiv.textContent = 'Nessun oggetto trovato.';
+        emptyDiv.textContent = 'No item found.';
         itemList.appendChild(emptyDiv);
         return;
     }
