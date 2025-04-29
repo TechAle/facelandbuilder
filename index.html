@@ -5,11 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Item Filter</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js"></script>
 </head>
-<body>
-<link href="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js"></script>
+<body id="page">
+<button id="theme-toggle" style="position: fixed; bottom: 20px; right: 20px; padding: 15px 30px; border-radius: 50px; background-color: #333; color: #fff; border: none; cursor: pointer; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); transition: background-color 0.3s ease;">
+    Dark
+</button>
 <div class="container">
+
+
     <h1>Filter Items</h1>
 
     <!-- Filter Form -->
@@ -18,31 +23,26 @@
         <form id="filter-form">
             <label for="type">Type:</label>
             <input type="text" id="type" list="type-suggestions" placeholder="E.g. Weapon, Armor...">
-            <datalist id="type-suggestions">
-            </datalist>
+            <datalist id="type-suggestions"></datalist>
 
             <label for="rarita">Rarity:</label>
             <input type="text" list="rarity-suggestions" id="rarita" placeholder="E.g. Epic, Rare, etc.">
-            <datalist id="rarity-suggestions">
-            </datalist>
+            <datalist id="rarity-suggestions"></datalist>
 
             <label for="gruppo">Group:</label>
             <input type="text" list="group-suggestions" id="gruppo" placeholder="Necklace, Any Armor">
-            <datalist id="group-suggestions">
-            </datalist>
+            <datalist id="group-suggestions"></datalist>
 
             <label for="name">Name:</label>
             <input type="text" list="name-suggestions" id="name" placeholder="Item name">
-            <datalist id="name-suggestions">
-            </datalist>
+            <datalist id="name-suggestions"></datalist>
 
             <div>
                 <label for="sort">Sort:</label>
                 <span id="sort-arrow" class="arrow-up" onclick="toggleSortOrder()"></span>
             </div>
             <input type="text" id="sort" list="sort-suggestions" placeholder="Sorting ability">
-            <datalist id="sort-suggestions">
-            </datalist>
+            <datalist id="sort-suggestions"></datalist>
 
             <label for="description">Description:</label>
             <input type="text" id="description" placeholder="Item description">
@@ -50,16 +50,14 @@
             <label for="level-range">Level:</label>
             <div id="level-range" style="margin: 50px;"></div>
 
-            <!-- Button to add ability filters -->
             <button id="add-ability-filter" type="button">Ability Filter</button>
-
-            <!-- Container for ability filters -->
             <div id="ability-filters" style="margin-top: 20px;"></div>
 
             <button type="submit" style="margin-top: 20px;">Filter</button>
         </form>
     </div>
 </div>
+
 <!-- Results -->
 <div id="results" class="results">
     <h2>Results:</h2>
@@ -67,8 +65,56 @@
         <!-- Filtered items will appear here -->
     </div>
 </div>
+
 <script src="range.js"></script>
 <script src="loader.js"></script>
 <script src="filters.js"></script>
+
+<script>
+    // Set initial theme from localStorage or default to light
+    if (localStorage.getItem('theme') === 'dark') {
+        document.getElementById('page').classList.add('dark-theme');
+        document.getElementById('theme-toggle').innerText = 'Light';
+        document.getElementById('theme-toggle').style.backgroundColor = '#fff';
+        document.getElementById('theme-toggle').style.color = '#333';
+    } else {
+        document.getElementById('theme-toggle').innerText = 'Dark';
+        document.getElementById('theme-toggle').style.backgroundColor = '#333';
+        document.getElementById('theme-toggle').style.color = '#fff';
+    }
+
+    // Add event listener to toggle theme
+    document.getElementById('theme-toggle').addEventListener('click', function () {
+        const page = document.getElementById('page');
+        const button = document.getElementById('theme-toggle');
+
+        page.classList.toggle('dark-theme');
+
+        // Store theme in localStorage
+        if (page.classList.contains('dark-theme')) {
+            button.innerText = 'Light';
+            button.style.backgroundColor = '#fff';
+            button.style.color = '#333';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            button.innerText = 'Dark';
+            button.style.backgroundColor = '#333';
+            button.style.color = '#fff';
+            localStorage.setItem('theme', 'light');
+        }
+    });
+
+
+    function toggleSortOrder() {
+        const arrow = document.getElementById("sort-arrow");
+        if (arrow.classList.contains("arrow-up")) {
+            arrow.classList.remove("arrow-up");
+            arrow.classList.add("arrow-down");
+        } else {
+            arrow.classList.remove("arrow-down");
+            arrow.classList.add("arrow-up");
+        }
+    }
+</script>
 </body>
 </html>

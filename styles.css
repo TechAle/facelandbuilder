@@ -1,4 +1,4 @@
-/* Resetta gli stili di base */
+/* Reset */
 * {
     margin: 0;
     padding: 0;
@@ -8,6 +8,7 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f5f5f5;
+    color: #222;
     padding: 10px;
 }
 
@@ -18,14 +19,12 @@ body {
     padding: 10px;
 }
 
-/* Titolo */
 h1 {
     text-align: center;
     color: #333;
     margin-bottom: 20px;
 }
 
-/* Sezione filtri */
 .filters {
     background-color: #fff;
     padding: 20px;
@@ -40,7 +39,6 @@ h1 {
     gap: 12px;
 }
 
-/* Label e input */
 .filters label {
     font-weight: bold;
 }
@@ -52,7 +50,6 @@ h1 {
     font-size: 16px;
 }
 
-/* Bottoni */
 .filters button {
     background-color: #4CAF50;
     color: white;
@@ -68,12 +65,10 @@ h1 {
     background-color: #45a049;
 }
 
-/* Slider */
 #level-range {
     margin: 20px 0;
 }
 
-/* Risultati */
 .results {
     background-color: #fff;
     padding: 20px;
@@ -85,52 +80,11 @@ h1 {
     margin-bottom: 15px;
 }
 
-.results ul {
-    list-style: none;
-    padding: 0;
-}
-
-.results li {
-    background-color: #fafafa;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease;
-}
-
-.results li:hover {
-    background-color: #e9e9e9;
-}
-
-.results li span {
-    font-weight: bold;
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-    .filters, .results {
-        padding: 15px;
-    }
-
-    .filters input, .filters button {
-        font-size: 14px;
-    }
-
-    .filters label {
-        font-size: 14px;
-    }
-
-    #level-range {
-        margin: 15px 0;
-    }
-}
-
 #item-list {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center; /* centra tutti i div nella riga */
-    gap: 10px; /* spazio tra gli elementi */
+    justify-content: center;
+    gap: 10px;
 }
 
 .item {
@@ -140,10 +94,6 @@ h1 {
     box-sizing: border-box;
     background-color: #f9f9f9;
     border-radius: 5px;
-}
-
-
-#item-list .item {
     text-align: center;
     color: #666;
     font-style: italic;
@@ -158,7 +108,6 @@ h1 {
     width: 320px;
 }
 
-/* Gradient background for icon wrapper based on rarity */
 .icon-wrapper {
     width: 64px;
     height: 64px;
@@ -168,22 +117,22 @@ h1 {
 }
 
 .icon-wrapper.Common {
-    background: radial-gradient(circle, #ffffff 0%, #cccccc 100%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(204, 204, 204, 0) 100%);
 }
 
 .icon-wrapper.Uncommon {
-    background: radial-gradient(circle, #e0f7ff 0%, #a0cfff 100%);
+    background: radial-gradient(circle, rgba(0, 170, 255, 0.9) 0%, rgba(0, 170, 255, 0) 100%);
 }
 
 .icon-wrapper.Rare {
-    background: radial-gradient(circle, #f3e0ff 0%, #b480ff 100%);
+    background: radial-gradient(circle, rgba(128, 0, 255, 0.9) 0%, rgba(128, 0, 255, 0) 100%);
 }
+
 
 .icon-wrapper.Epic {
-    background: radial-gradient(circle, #ffe0e0 0%, #ff6666 100%);
+    background: radial-gradient(circle, rgba(255, 0, 0, 0.9) 0%, rgba(255, 102, 102, 0) 100%)
 }
 
-/* Title coloring for rarity */
 .item-title.Common { color: #555; }
 .item-title.Uncommon { color: #0077cc; }
 .item-title.Rare { color: #8000ff; }
@@ -225,7 +174,6 @@ h1 {
 .passive-desc {
     margin-left: 0.5rem;
     font-style: italic;
-    color: #333;
 }
 
 .dps {
@@ -248,7 +196,7 @@ h1 {
 }
 
 .description {
-    color:slategray;
+    color: slategray;
 }
 
 #sort-arrow {
@@ -262,10 +210,72 @@ h1 {
 }
 
 .arrow-up {
-    border-bottom: 10px solid #000; /* Up arrow */
+    border-bottom: 10px solid #000;
 }
 
 .arrow-down {
-    border-top: 10px solid #000; /* Down arrow */
-    transform: rotate(0deg); /* Flip the arrow when down */
+    border-top: 10px solid #000;
+    transform: rotate(0deg);
+}
+
+@media (max-width: 600px) {
+    .filters, .results {
+        padding: 15px;
+    }
+
+    .filters input, .filters button {
+        font-size: 14px;
+    }
+
+    .filters label {
+        font-size: 14px;
+    }
+
+    #level-range {
+        margin: 15px 0;
+    }
+}
+
+/* Dark Theme */
+.dark-theme {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+.dark-theme .filters,
+.dark-theme .results {
+    background-color: #1e1e1e;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+.dark-theme .filters input {
+    background-color: #2c2c2c;
+    color: #f0f0f0;
+    border: 1px solid #555;
+}
+
+.dark-theme .filters button {
+    background-color: #333;
+    color: white;
+}
+
+.dark-theme .filters button:hover {
+    background-color: #444;
+}
+
+.dark-theme .results li {
+    background-color: #2a2a2a;
+    color: #ddd;
+}
+
+.dark-theme .item-container {
+    background: #1e1e1e;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+.dark-theme .description {
+    color: #bbb;
+}
+.dark-theme > div > h1 {
+    color: white
 }
