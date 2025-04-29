@@ -4,6 +4,9 @@ class Item {
         if (!names.includes(this.name)) {
             names.push(this.name);
         }
+        if (this.name === "Ear Spike") {
+            let a = 0
+        }
         this.rarity = data.rarity || 'Common';
         if (!rarities.includes(this.rarity)) {
             rarities.push(this.rarity);
@@ -17,6 +20,7 @@ class Item {
         this.levelRequirement = this.extractLevelRequirement(data.description);
 
         // Description: prefer flavorText if available, else clean description
+        this.description = ""
         if (data.flavorText && data.flavorText.length > 0) {
             this.description = data.flavorText.map(Item.stripColors).join(' ');
         } else {
@@ -30,12 +34,24 @@ class Item {
         this.stats = data.description
             .filter(line => Item.isStatLine(line))
             .map(line => Item.parseStatLine(Item.stripColors(line))); // Strip colors before parsing
+        this.stats = this.stats.map(stat => {
+            if (stat[0] === false) {
+                this.description += " " + stat[1]; // Append the failed parse to the description
+                return false;
+            }
+            return stat
+        })
         this.stats = this.stats.filter(stat => stat !== false); // Remove any failed parses
 
         this.gemSlots = data.gemSlots || 0;
         this.enchantable = !!data.enchantable;
         this.specialFlag = data.specialFlag || null;
         this.passive = data.passives || data.passive || null;
+        if (this.passive) {
+            this.passive = this.passive.map(stat => {
+              return Item.replaceWtf(stat)
+            })
+        }
         if (this.passive && this.passive.length > 0) {
             this.passive = this.passive.filter(stat => Item.isStatLine(stat))
                                         .map(stat => Item.stripColors(stat).trim())
@@ -54,6 +70,11 @@ class Item {
     static stripColors(text) {
         // Remove all color codes like |pink|, |lgray|, |dgray|, etc.
         return text.replace(/\|[a-z]*\|/gi, '');
+    }
+
+    static replaceWtf(text) {
+        return text.replace("儔", " Life").replace("儀", " Physical Damage").replace("峑", " Range")
+            .replace("儠", " Life Regen").replace("儡", "Barrier Regen")
     }
 
     static isStatLine(text) {
@@ -108,8 +129,7 @@ class Item {
         // Cleaned up stat
         result.stat = clean.trim();
         if (isNaN(result.minValue)) {
-            this.description += " " + text + " ";
-            return false
+            return [false, this.replaceWtf(text)]
         }
         if (!statsList.includes(result.stat)) {
             statsList.push(result.stat);
