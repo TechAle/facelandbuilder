@@ -4,7 +4,7 @@ class Item {
         if (!names.includes(this.name)) {
             names.push(this.name);
         }
-        if (this.name === "Spirit Wind") {
+        if (this.name === "Sky Walker") {
             let a = 0
         }
         this.rarity = data.rarity || 'Common';
@@ -29,8 +29,8 @@ class Item {
                 .filter(line => line.trim() !== '' && !Item.isStatLine(line)
                     && line.indexOf("Level Requirement") === -1 && line.indexOf("Skill Requirement") === -1
                     && line.indexOf("Skill XP") === -1)
-                .map(Item.stripColors)
                 .map(Item.replaceWtf)
+                .map(Item.stripColors)
                 .join(' ');
         }
 
