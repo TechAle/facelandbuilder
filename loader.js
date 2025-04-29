@@ -4,7 +4,7 @@ class Item {
         if (!names.includes(this.name)) {
             names.push(this.name);
         }
-        if (this.name === "Ear Spike") {
+        if (this.name === "Enlightenment") {
             let a = 0
         }
         this.rarity = data.rarity || 'Common';
@@ -27,7 +27,8 @@ class Item {
         } else {
             this.description = data.description
                 .filter(line => line.trim() !== '' && !Item.isStatLine(line)
-                    && line.indexOf("Level Requirement") === -1 && line.indexOf("Skill Requirement") === -1)
+                    && line.indexOf("Level Requirement") === -1 && line.indexOf("Skill Requirement") === -1
+                    && line.indexOf("Skill XP") === -1)
                 .map(Item.stripColors)
                 .map(Item.replaceWtf)
                 .join(' ');
@@ -85,7 +86,7 @@ class Item {
     static isStatLine(text) {
         // Detect if a line is likely a "stat" rather than description
         const clean = Item.stripColors(text).trim();
-        return (!clean.includes("Level")) && (!clean.includes("Skill")) && clean.length > 0 && clean.indexOf(" ") !== -1
+        return (!clean.includes("Level")) && (!clean.includes("Skill Requirement")) && clean.length > 0 && clean.indexOf(" ") !== -1
     }
 
     static parseStatLine(text) {
