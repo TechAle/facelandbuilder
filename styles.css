@@ -8,19 +8,24 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f5f5f5;
-    padding: 20px;
+    padding: 10px;
 }
 
 .container {
-    width: 80%;
+    width: 100%;
+    max-width: 900px;
     margin: 0 auto;
+    padding: 10px;
 }
 
+/* Titolo */
 h1 {
     text-align: center;
     color: #333;
+    margin-bottom: 20px;
 }
 
+/* Sezione filtri */
 .filters {
     background-color: #fff;
     padding: 20px;
@@ -32,39 +37,52 @@ h1 {
 .filters form {
     display: flex;
     flex-direction: column;
+    gap: 12px;
 }
 
+/* Label e input */
 .filters label {
-    margin-bottom: 8px;
     font-weight: bold;
 }
 
 .filters input {
-    padding: 8px;
-    margin-bottom: 12px;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 16px;
 }
 
+/* Bottoni */
 .filters button {
     background-color: #4CAF50;
     color: white;
     padding: 10px;
     border: none;
     border-radius: 4px;
+    font-size: 16px;
     cursor: pointer;
+    width: 100%;
 }
 
 .filters button:hover {
     background-color: #45a049;
 }
 
+/* Slider */
+#level-range {
+    margin: 20px 0;
+}
+
+/* Risultati */
 .results {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.results h2 {
+    margin-bottom: 15px;
 }
 
 .results ul {
@@ -78,6 +96,7 @@ h1 {
     margin-bottom: 10px;
     border-radius: 4px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
 }
 
 .results li:hover {
@@ -86,4 +105,46 @@ h1 {
 
 .results li span {
     font-weight: bold;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .filters, .results {
+        padding: 15px;
+    }
+
+    .filters input, .filters button {
+        font-size: 14px;
+    }
+
+    .filters label {
+        font-size: 14px;
+    }
+
+    #level-range {
+        margin: 15px 0;
+    }
+}
+
+#item-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* centra tutti i div nella riga */
+    gap: 10px; /* spazio tra gli elementi */
+}
+
+.item {
+    width: 320px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+
+#item-list .item {
+    text-align: center;
+    color: #666;
+    font-style: italic;
 }

@@ -88,8 +88,18 @@ function updateResults(items) {
     const itemList = document.getElementById('item-list');
     itemList.innerHTML = ''; // Svuota la lista esistente
 
+    if (items.length === 0) {
+        const emptyDiv = document.createElement('div');
+        emptyDiv.className = 'item';
+        emptyDiv.textContent = 'Nessun oggetto trovato.';
+        itemList.appendChild(emptyDiv);
+        return;
+    }
+
     items.forEach(item => {
-        const listItem = document.createElement('li');
+        const listItem = document.createElement('div');
+        listItem.className = 'item'; // Importante per il CSS di 320px!
+
         let htmlContent = '';
 
         if (item.name) {
@@ -131,11 +141,8 @@ function updateResults(items) {
         listItem.innerHTML = htmlContent;
         itemList.appendChild(listItem);
     });
-
-    if (items.length === 0) {
-        itemList.innerHTML = '<li>Nessun oggetto trovato.</li>';
-    }
 }
+
 
 // Bottone "Filtro Abilità"
 document.getElementById('add-ability-filter').addEventListener('click', function() {
