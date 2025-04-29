@@ -17,16 +17,26 @@
         <h2>Filtri</h2>
         <form id="filter-form">
             <label for="type">Tipo:</label>
-            <input type="text" id="type" placeholder="Es. Weapon, Armor...">
+            <input type="text" id="type" list="type-suggestions" placeholder="Es. Weapon, Armor...">
+            <datalist id="type-suggestions">
+            </datalist>
+
 
             <label for="rarita">Rarità:</label>
-            <input type="text" id="rarita" placeholder="Es. Epico Raro ecc">
+            <input type="text" list="rarity-suggestions" id="rarita" placeholder="Es. Epico Raro ecc">
+            <datalist id="rarity-suggestions">
+            </datalist>
+
 
             <label for="gruppo">Gruppo:</label>
-            <input type="text" id="gruppo" placeholder="Necklace Any Armor">
+            <input type="text" list="group-suggestions" id="gruppo" placeholder="Necklace Any Armor">
+            <datalist id="group-suggestions">
+            </datalist>
 
             <label for="name">Nome:</label>
-            <input type="text" id="name" placeholder="Nome dell'oggetto">
+            <input type="text" list="name-suggestions" id="name" placeholder="Nome dell'oggetto">
+            <datalist id="name-suggestions">
+            </datalist>
 
             <label for="description">Descrizione:</label>
             <input type="text" id="description" placeholder="Descrizione dell'oggetto">

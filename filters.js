@@ -174,13 +174,63 @@ document.getElementById('add-ability-filter').addEventListener('click', function
     removeButton.onclick = function() {
         container.removeChild(filterRow);
     };
+    // Aggiungi datalist
+    var datalist = document.createElement('datalist');
+    datalist.id = 'ability-suggestions';
+    abilityInput.setAttribute('list', 'ability-suggestions');
+    // Aggiungi tutti statsList
+    statsList.forEach(stat => {
+        const option = document.createElement('option');
+        option.value = stat;
+        datalist.appendChild(option);
+    });
 
     // Aggiungi tutto alla riga
     filterRow.appendChild(abilityInput);
     filterRow.appendChild(minInput);
     filterRow.appendChild(maxInput);
     filterRow.appendChild(removeButton);
+    filterRow.appendChild(datalist);
 
     // Aggiungi la riga al contenitore
     container.appendChild(filterRow);
 });
+
+(async () => {
+    while (!items.length) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+    }
+    const datalistType = document.getElementById('type-suggestions');
+
+    types.forEach(type => {
+        const option = document.createElement('option');
+        option.value = type;
+        datalistType.appendChild(option);
+    });
+
+    const datalistRarita = document.getElementById('rarity-suggestions');
+
+    rarities.forEach(type => {
+        const option = document.createElement('option');
+        option.value = type;
+        datalistRarita.appendChild(option);
+    });
+
+    const datalistGruppo = document.getElementById('group-suggestions');
+
+    group.forEach(type => {
+        const option = document.createElement('option');
+        option.value = type;
+        datalistGruppo.appendChild(option);
+    });
+
+    const datalistNome = document.getElementById('name-suggestions');
+
+    names.forEach(type => {
+        const option = document.createElement('option');
+        option.value = type;
+        datalistNome.appendChild(option);
+    });
+
+})()
+

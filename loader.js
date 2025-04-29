@@ -1,11 +1,17 @@
 class Item {
     constructor(data) {
         this.name = data.strippedName || data.name || 'Unnamed';
-        if (this.name === "Amulet Of Darkness") {
-            let a = 0
+        if (!names.includes(this.name)) {
+            names.push(this.name);
         }
         this.rarity = data.rarity || 'Common';
+        if (!rarities.includes(this.rarity)) {
+            rarities.push(this.rarity);
+        }
         this.type = data.tier || data.title || 'Unknown'; // Prefer 'tier' if exists
+        if (!types.includes(this.type)) {
+            types.push(this.type);
+        }
 
         // Extract level requirement from description if exists
         this.levelRequirement = this.extractLevelRequirement(data.description);
@@ -35,6 +41,14 @@ class Item {
                                         .map(stat => Item.stripColors(stat).trim())
             }
         this.groupNames = data.groupNames || [];
+        if (this.groupNames.length > 0) {
+            this.groupNames = this.groupNames.map(groupName => groupName.trim());
+            this.groupNames.forEach(groupName => {
+                if (!group.includes(groupName)) {
+                    group.push(groupName);
+                }
+            });
+        }
     }
 
     static stripColors(text) {
@@ -97,6 +111,9 @@ class Item {
             this.description += " " + text + " ";
             return false
         }
+        if (!statsList.includes(result.stat)) {
+            statsList.push(result.stat);
+        }
 
         return result;
     }
@@ -116,6 +133,13 @@ class Item {
 
 }
 const items = []
+const names = []
+const rarities = []
+const types = []
+const group = []
+const statsList = []
+let isLoading = true
+
 
 function loadFileIntoVariable(url) {
     return fetch(url)
@@ -164,6 +188,7 @@ loadFileIntoVariable('https://face.land/static/js/main.e83e3d0e.js')
                 items.push(new Item(item));
             });
         });
+        isLoading = false;
 
     })
     .catch(error => {
