@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Item Filter</title>
+    <title>Item Builder</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js"></script>
@@ -21,43 +21,55 @@
     <div class="filters">
         <h2>Filters</h2>
         <form id="filter-form">
-            <label for="type">Type:</label>
-            <input type="text" id="type" list="type-suggestions" placeholder="E.g. Weapon, Armor...">
-            <datalist id="type-suggestions"></datalist>
+            <label for="typeHelmet">Helmet:</label>
+            <input type="text" id="typeHelmet" list="helmet-suggestions">
+            <datalist id="helmet-suggestions"></datalist>
 
-            <label for="rarita">Rarity:</label>
-            <input type="text" list="rarity-suggestions" id="rarita" placeholder="E.g. Epic, Rare, etc.">
-            <datalist id="rarity-suggestions"></datalist>
+            <label for="typeChestplate">Chestplate:</label>
+            <input type="text" id="typeChestplate" list="chestplate-suggestions">
+            <datalist id="chestplate-suggestions"></datalist>
 
-            <label for="gruppo">Group:</label>
-            <input type="text" list="group-suggestions" id="gruppo" placeholder="Necklace, Any Armor">
-            <datalist id="group-suggestions"></datalist>
+            <label for="typeLeggings">Leggings:</label>
+            <input type="text" id="typeLeggings" list="leggings-suggestions">
+            <datalist id="leggings-suggestions"></datalist>
 
-            <label for="name">Name:</label>
-            <input type="text" list="name-suggestions" id="name" placeholder="Item name">
-            <datalist id="name-suggestions"></datalist>
+            <label for="typeBoots">Boots:</label>
+            <input type="text" id="typeBoots" list="boots-suggestions">
+            <datalist id="boots-suggestions"></datalist>
 
-            <div>
-                <label for="sort">Sort:</label>
-                <span id="sort-arrow" class="arrow-up" onclick="toggleSortOrder()"></span>
-            </div>
-            <input type="text" id="sort" list="sort-suggestions" placeholder="Sorting ability">
-            <datalist id="sort-suggestions"></datalist>
+            <label for="typeMainhand">Mainhand:</label>
+            <input type="text" id="typeMainhand" list="mainhand-suggestions">
+            <datalist id="mainhand-suggestions"></datalist>
 
-            <label for="description">Description:</label>
-            <input type="text" id="description" placeholder="Item description">
+            <label for="typeOffhand">Offhand:</label>
+            <input type="text" id="typeOffhand" list="offhand-suggestions">
+            <datalist id="offhand-suggestions"></datalist>
 
-            <button id="add-ability-filter" type="button">Add Ability Filter</button>
-            <div id="ability-filters" style="margin-top: 20px;"></div>
+            <label for="typeNecklace">Necklace:</label>
+            <input type="text" id="typeNecklace" list="necklace-suggestions">
+            <datalist id="necklace-suggestions"></datalist>
 
-            <label for="level-range">Level:</label>
-            <div id="level-range" style="margin: 50px;"></div>
+            <label for="typeTrinket">Trinket:</label>
+            <input type="text" id="typeTrinket" list="trinket-suggestions">
+            <datalist id="trinket-suggestions"></datalist>
 
-            <label for="drop-range">Drop range:</label>
-            <div id="drop-range" style="margin: 50px;"></div>
+            <label for="typeRing1">First Ring:</label>
+            <input type="text" id="typeRing1" list="ring1-suggestions">
+            <datalist id="ring1-suggestions"></datalist>
 
-            <button type="submit" style="margin-top: 20px;">Search</button>
+            <label for="typeRing2">Second Ring:</label>
+            <input type="text" id="typeRing2" list="ring2-suggestions">
+            <datalist id="ring2-suggestions"></datalist>
+
+            <label for="typeEarring1">First Earring:</label>
+            <input type="text" id="typeEarring1" list="earring1-suggestions">
+            <datalist id="earring1-suggestions"></datalist>
+
+            <label for="typeEarring2">Second Earring:</label>
+            <input type="text" id="typeEarring2" list="earring2-suggestions">
+            <datalist id="earring2-suggestions"></datalist>
         </form>
+
     </div>
 </div>
 
@@ -69,9 +81,8 @@
     </div>
 </div>
 
-<script src="js/range.js"></script>
 <script src="js/loader.js"></script>
-<script src="js/filters.js"></script>
+<script src="js/builder.js"></script>
 
 <script>
     // Set initial theme from localStorage or default to light

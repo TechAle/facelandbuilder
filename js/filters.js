@@ -296,7 +296,7 @@ document.getElementById('add-ability-filter').addEventListener('click', function
 });
 
 (async () => {
-    while (!items.length) {
+    while (isLoading) {
         await new Promise(resolve => setTimeout(resolve, 100));
     }
     const datalistType = document.getElementById('type-suggestions');

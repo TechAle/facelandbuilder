@@ -71,9 +71,6 @@ class Item {
         }
         this.dropBase = data.dropBase;
         this.dropRange = data.dropRange;
-        if (dropRange <= 0) {
-            console.log("wtf")
-        }
     }
 
     static stripColors(text) {
