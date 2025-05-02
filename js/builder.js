@@ -2,7 +2,7 @@ const slotMap = {
     "helmet-suggestions": ["Hat", "Coif", "Helmet"],
     "chestplate-suggestions": ["Robe", "Platebody", "Tunic"],
     "leggings-suggestions": ["Pants", "Greaves", "Platelegs", "Skirt"],
-    "boots-suggestions": ["Shoes"],
+    "boots-suggestions": ["Shoes", "Boots"],
     "mainhand-suggestions": [
         "Pistol", "Dagger", "Musket", "Wand", "Sword", "Longbow", "Mace", "Shortbow", "Hoe",
         "Battle Axe", "Rod", "Pickaxe", "Staff", "Warhammer", "Lumber Axe"
@@ -176,12 +176,13 @@ function update() {
                     currentModification += stat + " ";
                 }
             });
-            if (currentStatus !== "") {
-                if (!output.passives[currentStatus]) {
-                    output.passives[currentStatus] = [];
-                }
-                output.passives[currentStatus].push(currentModification);
+            if (currentStatus === "")
+                currentStatus = "Passive";
+            if (!output.passives[currentStatus]) {
+                output.passives[currentStatus] = [];
             }
+            output.passives[currentStatus].push(currentModification);
+
         }
         item.stats.forEach(stat => {
             if (!output.stats[stat.stat]) {
@@ -476,13 +477,13 @@ document.getElementById('long-link-button').addEventListener('click', () => {
     });
 
     // Use current URL as base
-    const currentUrl = window.location.href.split('#')[0]; // This excludes the hash part if it's already there
+    const currentUrl = generateLink()
 
     // Append the input values to the URL (you could also use encoding or something more complex here)
     const buildText = `FaceBuilder build:\n> ${inputs.join('\n> ')}`;
 
     // Create the full text and set it in the input
-    const fullText = `${currentUrl}#10_placeholder\n${buildText}`;
+    const fullText = `${currentUrl}\n${buildText}`;
 
     navigator.clipboard.writeText(fullText).then(() => {
         notification()

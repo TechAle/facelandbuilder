@@ -14,7 +14,8 @@ function filterItems(items, filters) {
         if (item.levelRequirement < filters.livelloMin || item.levelRequirement > filters.livelloMax || item.levelRequirement === undefined) return false;
         let dropMin = item.dropBase - item.dropRange
         let dropMax = item.dropBase + item.dropRange
-        if (item.dropBase >= 1 && !(filters.dropMin <= dropMax && filters.dropMax >= dropMin)) return false;
+        if ((item.dropBase >= 1 && (item.dropBase !== 200 && item.dropRange === -1))
+                && !(filters.dropMin <= dropMax && filters.dropMax >= dropMin)) return false;
         // Filter by stats (allow any stat if not specified)
         for (let key in filters.stats) {
             if (key !== undefined) {

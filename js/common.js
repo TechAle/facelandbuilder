@@ -73,7 +73,7 @@ function updateResults(items) {
                 center.textContent = stat.stat;
                 // Check if gem exists, if it does add *
                 if (stat.gem !== undefined) {
-                    center.textContent += ' *'
+                    center.textContent += '*'
                 }
 
                 const right = document.createElement('div');
