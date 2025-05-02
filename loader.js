@@ -4,7 +4,7 @@ class Item {
         if (!names.includes(this.name)) {
             names.push(this.name);
         }
-        if (this.name === "Sky Walker") {
+        if (this.name === "Gorebunny Fang") {
             let a = 0
         }
         this.rarity = data.rarity || 'Common';
@@ -68,6 +68,11 @@ class Item {
                     group.push(groupName);
                 }
             });
+        }
+        this.dropBase = data.dropBase;
+        this.dropRange = data.dropRange;
+        if (dropRange <= 0) {
+            console.log("wtf")
         }
     }
 
@@ -211,28 +216,46 @@ function unescapeJSString(str) {
             return String.fromCharCode(parseInt(hex, 16));
         });
 }
+let a = false
+loadFileIntoVariable("https://face.land/#/").then(response => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(response, 'text/html');
 
-// Usage:
-loadFileIntoVariable('https://face.land/static/js/main.e83e3d0e.js')
-    .then(fileContent => {
-        let parts = fileContent.split("JSON.parse('[{");
-        parts.shift(); // remove the first part (before first JSON.parse)
+    const scriptTags = Array.from(doc.querySelectorAll('script[src]'));
+    const matchingScript = scriptTags.find(script =>
+        script.getAttribute('src').includes("/static/js/main")
+    );
 
-        let lines = parts.map(part => part.split("}]')")[0]);
-        lines = lines.map(line => "[{" + line + "}]");
+    if (matchingScript) {
+        const scriptSrc = matchingScript.getAttribute('src');
+        // Usage:
+        loadFileIntoVariable("https://face.land/static/js" + scriptSrc.split("/static/js")[1])
+            .then(fileContent => {
+                let parts = fileContent.split("JSON.parse('[{");
+                parts.shift(); // remove the first part (before first JSON.parse)
 
-        // Unescape each string before parsing
-        lines = lines.map(line => unescapeJSString(line));
-        lines = lines.map(line => JSON.parse(line));
+                let lines = parts.map(part => part.split("}]')")[0]);
+                lines = lines.map(line => "[{" + line + "}]");
 
-        lines.forEach(line => {
-            line.forEach(item => {
-                items.push(new Item(item));
+                // Unescape each string before parsing
+                lines = lines.map(line => unescapeJSString(line));
+                lines = lines.map(line => JSON.parse(line));
+
+                lines.forEach(line => {
+                    line.forEach(item => {
+                        items.push(new Item(item));
+                    });
+                });
+                isLoading = false;
+
+            })
+            .catch(error => {
+                console.error("Error loading or parsing file:", error);
             });
-        });
-        isLoading = false;
 
-    })
-    .catch(error => {
-        console.error("Error loading or parsing file:", error);
-    });
+    } else {
+        console.error("Matching script tag not found");
+    }
+});
+
+

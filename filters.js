@@ -1,5 +1,8 @@
 function filterItems(items, filters) {
     return items.filter(item => {
+        if (item.name === "Acolyte's Boots") {
+            let z = 0
+        }
         // Filter by item type (allow any type if not specified)
         if (filters.type && item.type !== filters.type) return false;
 
@@ -9,6 +12,9 @@ function filterItems(items, filters) {
             if (!groupNames.includes(filters.gruppo)) return false;
         }
         if (item.levelRequirement < filters.livelloMin || item.levelRequirement > filters.livelloMax || item.levelRequirement === undefined) return false;
+        let dropMin = item.dropBase - item.dropRange
+        let dropMax = item.dropBase + item.dropRange
+        if (item.dropBase >= 1 && !(filters.dropMin <= dropMax && filters.dropMax >= dropMin)) return false;
         // Filter by stats (allow any stat if not specified)
         for (let key in filters.stats) {
             if (key !== undefined) {
@@ -47,6 +53,7 @@ document.getElementById('filter-form').addEventListener('submit', function(event
 
     var livello = slider.noUiSlider.get();
     var stats = document.getElementsByClassName("filter-row")
+    var range = dropRange.noUiSlider.get();
     var output = {}
     for(var i = 0; i < stats.length; i++) {
         var statName = stats[i].getElementsByTagName("input")[0].value;
@@ -61,6 +68,8 @@ document.getElementById('filter-form').addEventListener('submit', function(event
         type: document.getElementById('type').value,
         livelloMin: livello[0],
         livelloMax: livello[1],
+        dropMin: range[0],
+        dropMax: range[1],
         stats: output,
         name: document.getElementById('name').value,
         description: document.getElementById('description').value,
@@ -129,16 +138,6 @@ function updateResults(items) {
         iconContainer.appendChild(iconWrapper);
         container.appendChild(iconContainer);
 
-        // Example: Damage Types
-        if (item.damage) {
-            item.damage.forEach(dmg => {
-                const row = document.createElement('div');
-                row.className = 'row center';
-                row.innerHTML = `<span class="${dmg.element}">${dmg.element}</span><span> Damage: ${dmg.min}-${dmg.max}</span>`;
-                container.appendChild(row);
-            });
-        }
-
         // Requirements
         if (item.levelRequirement) {
             const levelRow = document.createElement('div');
@@ -205,8 +204,30 @@ function updateResults(items) {
             descriptionRow.className = 'description';
             descriptionRow.innerHTML = `${item.description}`;
             container.appendChild(descriptionRow);
-            const br = document.createElement('br');
-            container.appendChild(br);
+        }
+
+        if (item.dropBase <= 0 || item.dropRange <= -1) {
+            const dropRow = document.createElement('div');
+            dropRow.className = 'row';
+            dropRow.innerHTML = `<b>Global Drop</b>`;
+            container.appendChild(dropRow);
+        } else if (item.dropRange === 0) {
+            const dropRow = document.createElement('div');
+            dropRow.className = 'row';
+            dropRow.innerHTML = `<b>Drop:</b> Specific mobs level ${item.dropBase}`;
+            container.appendChild(dropRow);
+        } else {
+            const dropRow = document.createElement('div');
+            dropRow.className = 'row';
+            let minDrop = item.dropBase - item.dropRange;
+            if (minDrop < 1) {
+                minDrop = 1;
+            }
+            let maxDrop = item.dropBase + item.dropRange;
+            if (maxDrop > 100)
+                maxDrop = 100;
+            dropRow.innerHTML = `<b>Drop:</b> ${minDrop} <b> - </b> ${maxDrop}`;
+            container.appendChild(dropRow);
         }
 
 

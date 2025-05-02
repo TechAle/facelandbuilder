@@ -47,11 +47,14 @@
             <label for="description">Description:</label>
             <input type="text" id="description" placeholder="Item description">
 
+            <button id="add-ability-filter" type="button">Add Ability Filter</button>
+            <div id="ability-filters" style="margin-top: 20px;"></div>
+
             <label for="level-range">Level:</label>
             <div id="level-range" style="margin: 50px;"></div>
 
-            <button id="add-ability-filter" type="button">Add Ability Filter</button>
-            <div id="ability-filters" style="margin-top: 20px;"></div>
+            <label for="drop-range">Drop range:</label>
+            <div id="drop-range" style="margin: 50px;"></div>
 
             <button type="submit" style="margin-top: 20px;">Search</button>
         </form>
@@ -104,17 +107,6 @@
         }
     });
 
-
-    function toggleSortOrder() {
-        const arrow = document.getElementById("sort-arrow");
-        if (arrow.classList.contains("arrow-up")) {
-            arrow.classList.remove("arrow-up");
-            arrow.classList.add("arrow-down");
-        } else {
-            arrow.classList.remove("arrow-down");
-            arrow.classList.add("arrow-up");
-        }
-    }
 </script>
 </body>
 </html>
