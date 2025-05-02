@@ -71,6 +71,10 @@ function updateResults(items) {
                 const center = document.createElement('div');
                 center.className = 'stat-name';
                 center.textContent = stat.stat;
+                // Check if gem exists, if it does add *
+                if (stat.gem !== undefined) {
+                    center.textContent += ' *'
+                }
 
                 const right = document.createElement('div');
                 right.className = `stat-value ${stat.maxValue < 0 ? 'negative' : 'positive'}`;

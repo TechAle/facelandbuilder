@@ -69,7 +69,7 @@ function checkGems(id, n, groupsInput) {
                 gem.classList.add("gem");
                 gem.classList.add(nameCheck + "-gem-" + (i + 1));
                 gem.innerHTML = `
-                <input type="text" id="${nameCheck}-gem-${i + 1}" list="${nameCheck}-gem-${i + 1}-suggestions">
+                <input type="text" class="${nameCheck}-gem" id="${nameCheck}-gem-${i + 1}" list="${nameCheck}-gem-${i + 1}-suggestions">
                 <datalist id="${nameCheck}-gem-${i + 1}-suggestions"></datalist>
             `;
                 // Populate datalist
@@ -120,9 +120,34 @@ function update() {
         } else {
             items.forEach(item => {
                 if (item.name === inputName) {
-                    itemsBuilder.push(item);
+                    let itemToAdd = {
+                        ...item,
+                        stats: item.stats.map(stat => ({ ...stat }))
+                    }
                     // Check for the gem slots
                     checkGems(inputs[0], item.gemSlots, item.groupNames);
+                    // Check if there are gems
+                    let gems = document.getElementsByClassName(inputs[0].split("-")[0] + "-gems");
+                    Array.from(gems).forEach(gem => {
+                        let gemName = gem.querySelector('input').value.trim();
+                        if (gemName !== "") {
+                            items.forEach(gemItem => {
+                                if (gemItem.name === gemName) {
+                                    gemItem.stats.forEach(stat => {
+                                        itemToAdd.stats.push({
+                                            "stat": stat.stat,
+                                            "minValue": stat.minValue,
+                                            "maxValue": stat.maxValue,
+                                            "percentage": stat.percentage,
+                                            "gem": true,
+                                            "wtf": false
+                                        })
+                                    })
+                                }
+                            });
+                        }
+                    })
+                    itemsBuilder.push(itemToAdd);
                 }
             });
         }
