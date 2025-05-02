@@ -1,6 +1,6 @@
 // Funzione per aggiornare la lista degli oggetti filtrati
 function updateResults(items) {
-    const itemList = document.getElementById('item-list');
+    const itemList = document.getElementById('output-item');
     itemList.innerHTML = ''; // Clear existing list
 
     if (items.length === 0) {

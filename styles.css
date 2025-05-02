@@ -80,7 +80,7 @@ h1 {
     margin-bottom: 15px;
 }
 
-#item-list {
+.item-list {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;

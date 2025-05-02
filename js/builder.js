@@ -98,42 +98,207 @@ function update() {
     displayItemDetails(output);
 }
 
+const attributes = {
+    offensive: [
+        "More Earth Damage",
+        "Fire Damage",
+        "Physical Damage",
+        "Elemental Damage",
+        "More Shadow Damage",
+        "Earth Damage",
+        "Fire Damage",
+        "More Ice Damage",
+        "Lightning Damage",
+        "Critical Damage",
+        "More Lightning Damage",
+        "More Light Damage",
+        "More Fire Damage",
+        "True Damage",
+        "Bleed Damage",
+        "Rage On Hit",
+        "Attack Speed",
+        "Critical Chance",
+        "Bleed Chance",
+        "Poison Chance",
+        "Poison Duration",
+        "Extra Projectiles",
+        "Projectile Speed",
+        "Projectile Damage",
+        "Multishot",
+        "Rage When Hit",
+        "Sneak Attack Damage",
+        "Melee Reach",
+        "Sneak Skill"
+    ],
+    defensive: [
+        "Armor Penetration",
+        "Block",
+        "Evasion",
+        "Poison Resistance",
+        "Armor",
+        "Life On Kill",
+        "Block Recovery",
+        "Element Status Chance",
+        "Maximum Barrier",
+        "Life Regeneration",
+        "Reflected Damage",
+        "Maximum Life",
+        "Elemental Resist",
+        "Poison Resistance",
+        "Ice Resistance",
+        "Bleed Damage",
+        "Life From Potions",
+        "Damage Reduction",
+        "Lightning Resistance",
+        "Energy From Potions",
+        "Life From Potions",
+        "Shorter Barrier Delay",
+        "Dodge Chance",
+        "Burning Resistance",
+        "PvP Defence",
+        "Barrier Recharge Rate",
+        "More Max. Barrier",
+        "PvP Attack",
+        "Stealthiness",
+        "Energy When Hit",
+        "Energy On Hit",
+        "Energy On Kill",
+        "Energy Regeneration"
+    ],
+    support: [
+        "Skill XP",
+        "Cooldown Reduction",
+        "Loot Bonus",
+        "Loot Rarity",
+        "Gathering Speed",
+        "Combat XP",
+        "Mining Gems",
+        "Fishing Treasures",
+        "Mining Speed",
+        "Fishing Speed",
+        "Potion Refill Speed",
+        "Crafting Skill",
+        "Healing Power",
+        "Ability Damage",
+        "Character Size",
+        "Energy On Kill",
+        "Energy When Hit",
+        "Maximum Minions",
+        "Minion Damage",
+        "Max Earth Runes",
+        "Max. Rage",
+        "Rage On Kill",
+        "Sneak Skill"
+    ],
+    misc: [
+        "Bits Dropped",
+        "Bits Kept On Death",
+        "Loot Rarity",
+        "Maximum Energy",
+        "Maximum Rage",
+        "Movement Speed",
+        "Rage On Kill",
+        "Life From Potions",
+        "PvP Attack",
+        "PvP Defence",
+        "Jump Height",
+        "Reduced Gravity",
+        "Reduced Fall Damage",
+        "Sneak Skill",
+        "Shorter Barrier Delay",
+        "Rage On Hit",
+        "Piety",
+        "Maximum Faith"
+    ]
+};
 function displayItemDetails(item) {
     const resultsDiv = document.getElementById('results');
-    if (!resultsDiv) return;
-
+    const passiveDiv = document.getElementById('passive-list');
     const outputStats = resultsDiv.querySelector('.output-stats');
-    if (!outputStats) return;
 
     // Clear the output-stats section only
     outputStats.innerHTML = '';
+    passiveDiv.innerHTML = '';
 
     // Stats
-    const statsTitle = document.createElement('h3');
-    statsTitle.textContent = 'Stats:';
-    outputStats.appendChild(statsTitle);
+    let toAdd;
 
-    for (const [key, value] of Object.entries(item.stats)) {
-        const statLine = document.createElement('div');
-        statLine.textContent = `${key}: ${value}`;
-        outputStats.appendChild(statLine);
+    for (const category in attributes) {
+        toAdd = false;
+        const container = document.createElement('div');
+        container.className = 'item-container';
+
+
+        // Hidden title row for internal use or hover
+        const hiddenTitleRow = document.createElement('div');
+        hiddenTitleRow.className = 'center divTitle';
+        const hiddenTitle = document.createElement('a');
+        hiddenTitle.className = `item-title ${item.rarity || 'Common'}`;
+        hiddenTitle.textContent = category;
+        hiddenTitleRow.appendChild(hiddenTitle);
+        container.appendChild(hiddenTitleRow);
+
+        // Now check every stats
+        let stats = []
+        for(const [stat, value] of Object.entries(item.stats)) {
+            if (attributes[category].includes(stat)) {
+                stats.push({stat, value})
+            }
+        }
+        if (stats.length === 0) {
+            const noStats = document.createElement('div');
+            noStats.textContent = `No ${category} stats found.`;
+            container.appendChild(noStats);
+        } else {
+            stats.forEach(stat => {
+                const statLine = document.createElement('div');
+                statLine.className = 'stat-row';
+
+                const center = document.createElement('div');
+                center.className = 'stat-name';
+                center.textContent = stat.stat;
+
+                const right = document.createElement('div');
+                right.className = `stat-value ${stat.value < 0 ? 'negative' : 'positive'}`;
+                right.textContent = `${stat.value}`;
+
+                statLine.appendChild(center);
+                statLine.appendChild(right);
+                container.appendChild(statLine);
+                toAdd = true;
+            });
+        }
+
+        if (toAdd)
+            outputStats.appendChild(container);
     }
 
     // Passives
-    const passivesTitle = document.createElement('h3');
-    passivesTitle.textContent = 'Passives:';
-    outputStats.appendChild(passivesTitle);
 
     for (const [category, effects] of Object.entries(item.passives)) {
-        const categoryTitle = document.createElement('strong');
-        categoryTitle.textContent = category;
-        outputStats.appendChild(categoryTitle);
+        if (!effects || effects.length === 0) continue;
 
+        const container = document.createElement('div');
+        container.className = 'item-container';
+
+        // Hidden title row
+        const hiddenTitleRow = document.createElement('div');
+        hiddenTitleRow.className = 'center divTitle';
+        const hiddenTitle = document.createElement('a');
+        hiddenTitle.className = `item-title ${item.rarity || 'Common'}`;
+        hiddenTitle.textContent = category;
+        hiddenTitleRow.appendChild(hiddenTitle);
+        container.appendChild(hiddenTitleRow);
+
+        // Passive entries
         effects.forEach(effect => {
-            const passiveLine = document.createElement('div');
-            passiveLine.textContent = effect;
-            outputStats.appendChild(passiveLine);
+            const effectLine = document.createElement('div');
+            effectLine.className = 'passive-row';
+            effectLine.textContent = effect;
+            container.appendChild(effectLine);
         });
+
+        passiveDiv.appendChild(container);
     }
 }
 
