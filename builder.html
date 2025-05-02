@@ -9,6 +9,9 @@
     <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js"></script>
 </head>
 <body id="page">
+<div id="notification" style="display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: rgba(76, 175, 80, 1); color: white; padding: 10px 20px; border-radius: 5px; font-size: 16px; opacity: 1; transition: opacity 1s ease;">
+    Link copied!
+</div>
 <button id="theme-toggle" style="position: fixed; bottom: 20px; right: 20px; padding: 15px 30px; border-radius: 50px; background-color: #333; color: #fff; border: none; cursor: pointer; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); transition: background-color 0.3s ease;">
     Dark
 </button>
@@ -68,6 +71,15 @@
             <label for="typeEarring2">Second Earring:</label>
             <input type="text" id="typeEarring2" list="earring2-suggestions">
             <datalist id="earring2-suggestions"></datalist>
+
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <div id="long-link-button" style="padding: 8px 12px; background: #444; color: white; cursor: pointer; border-radius: 5px;">
+                    Get Long Link
+                </div>
+                <div id="short-link-button" style="padding: 8px 12px; background: #444; color: white; cursor: pointer; border-radius: 5px;">
+                    Short Link
+                </div>
+            </div>
         </form>
 
     </div>
