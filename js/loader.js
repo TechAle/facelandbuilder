@@ -62,7 +62,7 @@ class Item {
             }
         this.groupNames = data.groupNames || [];
         if (this.groupNames.length > 0) {
-            this.groupNames = this.groupNames.map(groupName => groupName.trim());
+            this.groupNames = this.groupNames.map(groupName => groupName.trim().replace("Any ", ""));
             this.groupNames.forEach(groupName => {
                 if (!group.includes(groupName)) {
                     group.push(groupName);

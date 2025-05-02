@@ -42,6 +42,7 @@ function updateResults(items) {
         iconContainer.appendChild(iconWrapper);
         container.appendChild(iconContainer);
 
+
         // Requirements
         if (item.levelRequirement) {
             const levelRow = document.createElement('div');
@@ -108,6 +109,27 @@ function updateResults(items) {
             descriptionRow.className = 'description';
             descriptionRow.innerHTML = `${item.description}`;
             container.appendChild(descriptionRow);
+        }
+
+        // TODO this could be refractored to use a common function
+        if (item.type === "Socket Gem") {
+            const gemType = document.createElement('div');
+            gemType.className = 'Row';
+            gemType.textContent = "For: ";
+            const gemTypes = item.groupNames.map(groupName => groupName.trim())
+                .filter(groupName => groupName !== 'Upgrade' && groupName !== 'Transmute' && groupName !== 'Event')
+                .join(', ');
+            gemType.textContent += gemTypes;
+            container.appendChild(gemType);
+        } else if (item.type === "Enchantment Tome") {
+            const gemType = document.createElement('div');
+            gemType.className = 'Row';
+            gemType.textContent = "For: ";
+            const gemTypes = item.groupNames.map(groupName => groupName.trim())
+                .filter(groupName => groupName !== 'Upgrade' && groupName !== 'Enchanting' && groupName !== 'Event')
+                .join(', ');
+            gemType.textContent += gemTypes;
+            container.appendChild(gemType);
         }
 
         if (item.dropBase <= 0 || item.dropRange <= -1) {
