@@ -43,19 +43,83 @@ document.querySelectorAll('#filter-form input').forEach(input => {
     input.addEventListener('change', update);
 });
 
+function checkGems(id, n) {
+    let nameCheck = id.split("-")[0]
+    if (n === 0) {
+        document.getElementById(nameCheck + "-modifications").style.display = "none";
+        let gems = document.getElementsByClassName(nameCheck + "-gems");
+        if (gems.length > 0) {
+            // Delete all the elements
+            for (let i = 0; i < gems.length; i++) {
+                gems[i].remove();
+            }
+        }
+    } else {
+        let gems = document.getElementById(nameCheck + "-modifications");
+        gems.style.display = "inline";
+        let gemsCount = document.getElementsByClassName(nameCheck + "-gems");
+        if (gemsCount.length !== n) {
+            // Delete all the elements
+            for (let i = 0; i < gemsCount.length; i++) {
+                gemsCount[i].remove();
+            }
+        }
+        for (let i = 0; i < n; i++) {
+            // Create this under gems
+            /*
+            <span class="helmet-gem">
+                        <input type="text" id="helmet-gem-1" list="helmet-gem-1-suggestions">
+                        <datalist id="helmet-gem-1-suggestions"></datalist>
+                    </span>
+             */
+            let gem = document.createElement("span");
+            gem.className = nameCheck + "-gems";
+            gem.classList.add("gem");
+            gem.classList.add(nameCheck + "-gem-" + (i + 1));
+            gem.innerHTML = `
+                <input type="text" id="${nameCheck}-gem-${i + 1}" list="${nameCheck}-gem-${i + 1}-suggestions">
+                <datalist id="${nameCheck}-gem-${i + 1}-suggestions"></datalist>
+            `;
+            // Populate datalist
+            const datalist = document.getElementById(`${nameCheck}-gem-${i + 1}-suggestions`);
+            const seenNames = new Set(); // Avoid duplicates
+            items.forEach(item => {
+                if (item.type === "Gem" && !seenNames.has(item.name)) {
+                    const option = document.createElement('option');
+                    option.value = item.name;
+                    datalist.appendChild(option);
+                    seenNames.add(item.name);
+                }
+            });
+            // Append the gem to the parent
+            const parent = document.getElementById(nameCheck + "-gems");
+            parent.appendChild(gem);
+            // Add event listener to the new input
+            const newInput = gem.querySelector('input');
+            newInput.addEventListener('change', update);
+        }
+    }
+}
+
 // Dummy update function for example
 function update() {
     const inputNames = Array.from(document.querySelectorAll('#filter-form input'))
-        .map(input => input.value)
-        .filter(name => name); // filters out empty or undefined names
+        .map(input => [input.list.id, input.value])
 
     let itemsBuilder = []
-    inputNames.forEach(inputName => {
-        items.forEach(item => {
-            if (item.name === inputName) {
-                itemsBuilder.push(item);
-            }
-        });
+    inputNames.forEach(inputs => {
+        let inputName = inputs[1].trim();
+        if (inputName === "") {
+            checkGems(inputs[0], 0);
+        } else {
+            items.forEach(item => {
+                if (item.name === inputName) {
+                    itemsBuilder.push(item);
+                    // Check for the gem slots
+                    checkGems(inputs[0], item.gemSlots);
+                }
+            });
+        }
     });
     updateResults(itemsBuilder);
     let output = {
@@ -313,14 +377,6 @@ function generateLink() {
     });
 
     return `${window.location.origin}${window.location.pathname}?data=${LZString.compressToEncodedURIComponent(params.toString())}`;
-}
-
-function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(() => {
-        console.log('Copied to clipboard:', text);
-    }).catch(err => {
-        console.error('Copy failed:', err);
-    });
 }
 
 window.addEventListener('DOMContentLoaded', () => {
