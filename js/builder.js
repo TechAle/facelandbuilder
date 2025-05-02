@@ -43,7 +43,7 @@ document.querySelectorAll('#filter-form input').forEach(input => {
     input.addEventListener('change', update);
 });
 
-function checkGems(id, n) {
+function checkGems(id, n, groupsInput) {
     let nameCheck = id.split("-")[0]
     if (n === 0) {
         document.getElementById(nameCheck + "-modifications").style.display = "none";
@@ -60,43 +60,48 @@ function checkGems(id, n) {
         let gemsCount = document.getElementsByClassName(nameCheck + "-gems");
         if (gemsCount.length !== n) {
             // Delete all the elements
-            for (let i = 0; i < gemsCount.length; i++) {
-                gemsCount[i].remove();
+            while (gemsCount.length > 0) {
+                gemsCount[0].remove();
             }
-        }
-        for (let i = 0; i < n; i++) {
-            // Create this under gems
-            /*
-            <span class="helmet-gem">
-                        <input type="text" id="helmet-gem-1" list="helmet-gem-1-suggestions">
-                        <datalist id="helmet-gem-1-suggestions"></datalist>
-                    </span>
-             */
-            let gem = document.createElement("span");
-            gem.className = nameCheck + "-gems";
-            gem.classList.add("gem");
-            gem.classList.add(nameCheck + "-gem-" + (i + 1));
-            gem.innerHTML = `
+            for (let i = 0; i < n; i++) {
+                let gem = document.createElement("span");
+                gem.className = nameCheck + "-gems";
+                gem.classList.add("gem");
+                gem.classList.add(nameCheck + "-gem-" + (i + 1));
+                gem.innerHTML = `
                 <input type="text" id="${nameCheck}-gem-${i + 1}" list="${nameCheck}-gem-${i + 1}-suggestions">
                 <datalist id="${nameCheck}-gem-${i + 1}-suggestions"></datalist>
             `;
-            // Populate datalist
-            const datalist = document.getElementById(`${nameCheck}-gem-${i + 1}-suggestions`);
-            const seenNames = new Set(); // Avoid duplicates
-            items.forEach(item => {
-                if (item.type === "Gem" && !seenNames.has(item.name)) {
-                    const option = document.createElement('option');
-                    option.value = item.name;
-                    datalist.appendChild(option);
-                    seenNames.add(item.name);
-                }
-            });
-            // Append the gem to the parent
-            const parent = document.getElementById(nameCheck + "-gems");
-            parent.appendChild(gem);
-            // Add event listener to the new input
-            const newInput = gem.querySelector('input');
-            newInput.addEventListener('change', update);
+                // Populate datalist
+                const datalist = document.getElementById(`${nameCheck}-gem-${i + 1}-suggestions`);
+                const seenNames = new Set(); // Avoid duplicates
+                items.forEach(item => {
+                    if (item.type === "Gem" && !seenNames.has(item.name)) {
+                        const option = document.createElement('option');
+                        option.value = item.name;
+                        datalist.appendChild(option);
+                        seenNames.add(item.name);
+                    }
+                });
+                // Append the gem to the parent
+                const parent = document.getElementById(nameCheck + "-gems");
+                parent.appendChild(gem);
+                // Add event listener to the new input
+                const newInput = gem.querySelector('input');
+                newInput.addEventListener('change', update);
+                // Add elements to the datalist of above
+                const datalistNew = document.getElementById(`${nameCheck}-gem-${i + 1}-suggestions`);
+                items.forEach(item => {
+                    if (item.type === "Socket Gem" && item.groupNames.find(a => groupsInput.includes(a)) !== undefined) {
+                        const option = document.createElement('option');
+                        option.value = item.name;
+                        datalistNew.appendChild(option);
+                        seenNames.add(item.name);
+                    }
+                });
+                // Add event listener to the new input
+                newInput.addEventListener('change', update);
+            }
         }
     }
 }
@@ -104,19 +109,20 @@ function checkGems(id, n) {
 // Dummy update function for example
 function update() {
     const inputNames = Array.from(document.querySelectorAll('#filter-form input'))
+        .filter(input => !input.id.includes("gem"))
         .map(input => [input.list.id, input.value])
 
     let itemsBuilder = []
     inputNames.forEach(inputs => {
         let inputName = inputs[1].trim();
         if (inputName === "") {
-            checkGems(inputs[0], 0);
+            checkGems(inputs[0], 0, []);
         } else {
             items.forEach(item => {
                 if (item.name === inputName) {
                     itemsBuilder.push(item);
                     // Check for the gem slots
-                    checkGems(inputs[0], item.gemSlots);
+                    checkGems(inputs[0], item.gemSlots, item.groupNames);
                 }
             });
         }
@@ -392,23 +398,27 @@ window.addEventListener('DOMContentLoaded', () => {
             const decompressed = LZString.decompressFromEncodedURIComponent(compressed);
             const decompressedParams = new URLSearchParams(decompressed);
 
+
             decompressedParams.forEach((value, key) => {
-                const input = document.getElementById(key);
-                if (input) {
-                    input.value = value;
-                    if (typeof input.update === 'function') {
-                        input.update();
+                if (!key.includes("gem")) {
+                    const input = document.getElementById(key);
+                    if (input) {
+                        input.value = value;
+                        if (typeof input.update === 'function') {
+                            input.update();
+                        }
                     }
                 }
             });
-        } else {
-            // If no compression, fallback to normal behavior
-            params.forEach((value, key) => {
-                const input = document.getElementById(key);
-                if (input) {
-                    input.value = value;
-                    if (typeof input.update === 'function') {
-                        input.update();
+            update()
+            decompressedParams.forEach((value, key) => {
+                if (key.includes("gem")) {
+                    const input = document.getElementById(key);
+                    if (input) {
+                        input.value = value;
+                        if (typeof input.update === 'function') {
+                            input.update();
+                        }
                     }
                 }
             });
