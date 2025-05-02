@@ -312,7 +312,7 @@ function generateLink() {
         }
     });
 
-    return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+    return `${window.location.origin}${window.location.pathname}?data=${LZString.compressToEncodedURIComponent(params.toString())}`;
 }
 
 function copyToClipboard(text) {
@@ -328,19 +328,38 @@ window.addEventListener('DOMContentLoaded', () => {
         while (isLoading) {
             await new Promise(resolve => setTimeout(resolve, 100));
         }
-        const params = new URLSearchParams(window.location.search);
 
-        params.forEach((value, key) => {
-            const input = document.getElementById(key);
-            if (input) {
-                input.value = value;
-                if (typeof input.update === 'function') {
-                    input.update(); // Optional: call update if your input has this custom method
+        const params = new URLSearchParams(window.location.search);
+        const compressed = params.get("data");
+
+        if (compressed) {
+            const decompressed = LZString.decompressFromEncodedURIComponent(compressed);
+            const decompressedParams = new URLSearchParams(decompressed);
+
+            decompressedParams.forEach((value, key) => {
+                const input = document.getElementById(key);
+                if (input) {
+                    input.value = value;
+                    if (typeof input.update === 'function') {
+                        input.update();
+                    }
                 }
-            }
-        });
-        update()
-    })()
+            });
+        } else {
+            // If no compression, fallback to normal behavior
+            params.forEach((value, key) => {
+                const input = document.getElementById(key);
+                if (input) {
+                    input.value = value;
+                    if (typeof input.update === 'function') {
+                        input.update();
+                    }
+                }
+            });
+        }
+
+        update();
+    })();
 });
 
 
@@ -375,24 +394,30 @@ document.getElementById('long-link-button').addEventListener('click', () => {
     const fullText = `${currentUrl}#10_placeholder\n${buildText}`;
 
     navigator.clipboard.writeText(fullText).then(() => {
-        // Show the notification
-        const notification = document.getElementById('notification');
-        notification.style.display = 'block';
-        notification.style.opacity = 1;  // Reset opacity to ensure smooth transition
-
-        // Fade out the notification after 2 seconds
-        setTimeout(() => {
-            notification.style.opacity = 0;  // Start fading
-        }, 100);
-
-        // After 3 seconds (1 second after fading out), hide the notification completely
-        setTimeout(() => {
-            notification.style.display = 'none';
-        }, 2000);
+        notification()
     });
 });
 
 document.getElementById('short-link-button').addEventListener('click', () => {
     const link = generateLink(); // later replace this with a shortener call
-    copyToClipboard(link);
+    navigator.clipboard.writeText(link).then(() => {
+        notification()
+    });
 });
+
+function notification() {
+    // Show the notification
+    const notification = document.getElementById('notification');
+    notification.style.display = 'block';
+    notification.style.opacity = 1;  // Reset opacity to ensure smooth transition
+
+    // Fade out the notification after 2 seconds
+    setTimeout(() => {
+        notification.style.opacity = 0;  // Start fading
+    }, 100);
+
+    // After 3 seconds (1 second after fading out), hide the notification completely
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 2000);
+}
